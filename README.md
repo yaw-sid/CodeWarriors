@@ -1,10 +1,4 @@
 <!---  Submission Readme Instructions  
-  Remove the warning below.
---->
-![warning](./challenges/challenge1/usecase/images/misc/warning.png) Before submitting your project repo, modify this README as instructed to meet the expectations of the judges.
-
-
-<!---  Submission Readme Instructions  
   Welcome to the FINOS GAAD Hackathon!
 
   This GitHub Repo represents a template for your project. It represents the central repository of all artifacts produced by your team. This repository will be referenced during the judging activity and after the event has completed.
@@ -16,7 +10,7 @@
     b) Add the mandatory GitHub Topics.
 --->
  
-# Project Name
+# _devX
 <!--- Template Instructions  
   Each Participating Team will have a unique name. Each Team will create a unique name for their project. Replace above "Project Name" with Participating Team Project Name which is different from the Team Name.
 --->
@@ -32,10 +26,10 @@
 
 | Event Attribute| Description |
 | --- | --- |
-| Project Team Name | xxxxxxxx |
-| Project Name | xxxxxxxx |
-| Challenge | xxxxxxxx |
-| Event Track | xxxxxxxx |
+| Project Team Name | CodeWarriors |
+| Project Name | _devX |
+| Challenge | Challenge 1 |
+| Event Track | Hack the code |
 
 ## Use Case Abstract
 <!--- Template Instructions  
@@ -84,6 +78,8 @@ Our team members came together because ...
  
 | Name | Organization |
 | --- | --- |
-| [Name](social-url) | ??? |
-| [Name](social-url) | ??? |
+| [Selorm Lotsu](https://www.linkedin.com/in/selorm-lotsu/) | Turntabl |
+| [Swithin Annor Okyere](https://www.linkedin.com/in/swithin-annor-okyere/) | Turntabl |
+| [Robert Ayetey](https://www.linkedin.com/in/robert-ayetey/) | Turntabl |
+| [Ronald Ssebalamu](https://www.linkedin.com/in/ronald-g-ssebalamu-2018b1165/) | FINOS |
 
