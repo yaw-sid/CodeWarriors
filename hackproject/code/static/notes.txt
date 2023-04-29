@@ -1,0 +1,24 @@
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+const fs = require('fs');
+
+const html = '<div class="red-bg"></div>'; // Replace with your HTML code
+const css = fs.readFileSync('./styles.css', 'utf8'); // Replace with the path to your CSS file
+
+const dom = new JSDOM(html, {
+  runScripts: 'dangerously',
+  resources: 'usable'
+});
+
+dom.window.document.documentElement.innerHTML += `<style>${css}</style>`;
+
+dom.window.onload = () => {
+  const div = dom.window.document.querySelector('.red-bg');
+  const bgColor = dom.window.getComputedStyle(div).backgroundColor;
+  
+  if (bgColor === 'rgb(255, 0, 0)') {
+    console.log('Background color is red!');
+  } else {
+    console.log('Background color is not red.');
+  }
+};
