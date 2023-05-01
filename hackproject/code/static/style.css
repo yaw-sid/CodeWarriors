@@ -1,15 +1,17 @@
 section {
-    background-color: white;
+  /* background-color: #ffffff; */
+  background-color: #f7f7f7;
 }
 
 section h1 {
-    color: black;
-    font-size: 2rem;
+  /* color: #000; */
+  color: #bdbdff;
+  font-size: 2rem;
 }
 
 section p {
-    color: #303030;
-    font-size: 1rem;
+  color: #303030;
+  font-size: 1rem;
 }
 
 section button {
