@@ -1,22 +1,22 @@
 section {
-  /* background-color: #ffffff; */
   background-color: #f7f7f7;
 }
 
-section h1 {
-  /* color: #000; */
+.poor-color {
   color: #bdbdff;
+}
+
+h1 {
   font-size: 2rem;
 }
 
-section p {
-  color: #303030;
+p {
   font-size: 1rem;
 }
 
-section button {
+button {
   display: inline-block;
   padding: 1.25rem;
   font-size: 1rem;
-  color: royalblue;
+  color: #4169e1;
 }
