@@ -1,3 +1,36 @@
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+
+const html = '<div style="color: ButtonText;"></div>'; // Replace with your HTML code
+
+const dom = new JSDOM(html, {
+  runScripts: 'dangerously',
+  resources: 'usable'
+});
+
+dom.window.onload = () => {
+  const div = dom.window.document.querySelector('div');
+  const color = dom.window.getComputedStyle(div).color;
+  
+  if (color.startsWith('rgb')) {
+    console.log('Color is an RGB value:', color);
+  } else {
+    const canvas = dom.window.document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 1, 1);
+    
+    const imageData = ctx.getImageData(0, 0, 1, 1);
+    const rgb = `rgb(${imageData.data[0]}, ${imageData.data[1]}, ${imageData.data[2]})`;
+    
+    console.log('Color is a system color:', color, 'converted to', rgb);
+  }
+};
+
+
+
+=========================================
 function getInheritedBackgroundColor(el) {
   // get default style for current browser
   var defaultStyle = getDefaultBackground() // typically "rgba(0, 0, 0, 0)"
