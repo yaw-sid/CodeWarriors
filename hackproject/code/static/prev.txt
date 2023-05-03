@@ -1,0 +1,97 @@
+import { Shade } from "a11y-theme-builder-sdk";
+import rgbToHex from "./worker";
+
+const MIN_CONTRAST_RATIO = 3.1;
+
+
+
+// export const validate = (dom: any, element: Element, parentBgColor: string) => {
+//   const children = element.children;
+//   for(let n=0; n<children.length; n++){
+//     const nthChild = children[n]
+
+//     console.log("<"+nthChild.tagName+">");
+//     const color = dom.window.getComputedStyle(element).color;
+//     const bgColor = dom.window.getComputedStyle(element).backgroundColor;
+//     console.log("foreground: "+ rgbToHex(color));
+//     console.log("background: "+bgColor);   
+//     console.log("parentBgColor: "+parentBgColor);
+//     console.log("</"+nthChild.tagName+">\n\n");
+
+//     validate(dom, nthChild, parentBgColor);
+//   }
+// }
+
+
+export const validate = (dom: any, element: Element, currentBgColor: string, validContrast: boolean): boolean => {
+  if (element.tagName == "STYLE") return true;
+  console.log("<",element.tagName.toLowerCase(),"/>");
+  const children = element.children;
+
+  for(let n=0; n<children.length; n++){
+    const nthChild = children[n]
+
+    console.log("<"+nthChild.tagName+">");
+    const color = dom.window.getComputedStyle(element).color;
+    const bgColor = dom.window.getComputedStyle(element).backgroundColor;
+    console.log("foreground: "+ rgbToHex(color));
+    console.log("background: "+bgColor);   
+    console.log("parentBgColor: "+currentBgColor);
+    console.log("</"+nthChild.tagName+">\n\n");
+
+    validate(dom, nthChild, currentBgColor, validContrast);
+  }
+
+  
+
+  if (element.children.length === 0) {
+    let newBgColor = currentBgColor;
+    const elementBgColor = dom.window.getComputedStyle(element).backgroundColor;    
+    if (elementBgColor) newBgColor = rgbToHex(elementBgColor);
+    console.log("elementBgColor: ", elementBgColor);
+    
+
+    const containerShade = Shade.fromHex(newBgColor);
+    let elementColor = "#000";
+    const computedColor = dom.window.getComputedStyle(element).color;
+    console.log("computedColor: ", computedColor);
+
+    if (computedColor) {
+      elementColor = computedColor;
+    }
+    const elementShade = Shade.fromHex(rgbToHex(elementColor));
+    validContrast = containerShade.getContrastRatio(elementShade) >= MIN_CONTRAST_RATIO;
+    if (!validContrast) console.log("%s\n\tforeground: %s\n\tbackground: %s\n\tinvalid contrast!", element.tagName, elementColor, currentBgColor);
+    return validContrast;
+  }
+
+  const elementBgColor = dom.window.getComputedStyle(element).backgroundColor;
+	
+  for (let i = 0; i < element.children.length; i++) {
+    const child = element.children[i];
+    let newBgColor = currentBgColor;
+    if (elementBgColor) newBgColor = rgbToHex(elementBgColor);
+
+    if (!validate(dom, child, newBgColor, validContrast)) validContrast = false;
+  }
+
+  return validContrast;
+}
+
+const getDefaultBackground = (dom: any) => {
+  let div = dom.window.document.createElement("div");
+  dom.window.document.head.appendChild(div);
+  let bg = dom.window.getComputedStyle(div).backgroundColor;
+  dom.window.document.head.removeChild(div);
+  console.log(bg);
+  return bg;
+};
+
+const getDefaultForeground = (dom: any) => {
+  let div = dom.window.document.createElement("div");
+  dom.window.document.head.appendChild(div);
+  let fg = dom.window.getComputedStyle(div).color;
+  dom.window.document.head.removeChild(div);
+  console.log(fg);
+  return fg;
+};
