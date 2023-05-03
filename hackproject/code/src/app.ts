@@ -1,16 +1,8 @@
 import path from "path";
 import { JSDOM } from "jsdom";
-import {
-  rootPath,
-  file,
-  rgbToHex,
-  validate,
-  getFileLocation,
-  FileType,
-  getCss,
-} from "./utils";
-import { DEFAULT_BACKGROUND, DEFAULT_FOREGROUND } from "./utils";
+import { rootPath, file, getFileLocation, FileType, getCss } from "./utils";
 import { FileNotSpecified, InvalidFile } from "./errors";
+import { Requirement, TypographicalValidator } from "./validators";
 
 const main = async () => {
   try {
@@ -37,17 +29,12 @@ const main = async () => {
 
     dom.window.onload = () => {
       const body = dom.window.document.querySelector("body");
-      const bodyBgColor =
-        rgbToHex(dom.window.getComputedStyle(body).backgroundColor) ||
-        DEFAULT_BACKGROUND;
-      const bodyColor =
-        rgbToHex(dom.window.getComputedStyle(body).color) || DEFAULT_FOREGROUND;
-
-      if (validate(dom, body, bodyBgColor, bodyColor)) {
-        console.log("\x1b[32m accessibility test passed!\x1b[0m");
-      } else {
+      const validator = new TypographicalValidator();
+      const requirement = Requirement.AA;
+  
+      if (!validator.validate(dom, body, requirement)) {
         console.log("\x1b[31m accessibility test failed!\x1b[0m");
-      }
+      }    
     };
   } catch (error) {
     if (error instanceof FileNotSpecified) {
