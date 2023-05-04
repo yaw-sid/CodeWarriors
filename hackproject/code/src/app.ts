@@ -10,7 +10,8 @@ const main = async () => {
     if (process.argv.includes("--html")) {
       htmlFile = getFileLocation(FileType.HTML);
     }
-    const html = await file.read(path.join(rootPath, htmlFile));
+    const htmlPath = path.join(rootPath, htmlFile);
+    const html = await file.read(htmlPath);
 
     let css = "";
     if (process.argv.includes("--css")) {
@@ -18,7 +19,7 @@ const main = async () => {
       css = await file.read(path.join(rootPath, cssFile));
     }
 
-    css += await getCss(html);
+    css += await getCss(html, htmlPath);
 
     const dom = new JSDOM(html, {
       runScripts: "dangerously",
@@ -30,17 +31,15 @@ const main = async () => {
     dom.window.onload = () => {
       const body = dom.window.document.querySelector("body");
       const requirement = Requirement.AA;
-  
+
       const validator = new ContrastValidator();
       if (!validator.validate(dom, body, requirement)) {
         console.log("\x1b[31m accessibility test failed!\x1b[0m");
         process.exit(1);
-      } 
+      }
       console.log("\x1b[32m accessibility test passed!\x1b[0m");
       process.exit(0);
-
     };
-    
   } catch (error) {
     if (error instanceof FileNotSpecified) {
       console.error(error.message);
