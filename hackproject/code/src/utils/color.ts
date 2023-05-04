@@ -57,3 +57,15 @@ export default (color: string): string | undefined => {
   }
   return color;
 };
+
+export const rgbHex = (color: string) => {
+  const rgb = toRgb(color);
+  const rgbValues = rgb ? rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/) : undefined;
+  if (rgbValues) {
+    const r = parseInt(rgbValues[1], 10).toString(16);
+    const g = parseInt(rgbValues[2], 10).toString(16);
+    const b = parseInt(rgbValues[3], 10).toString(16);
+    return `#${r.padStart(2, "0")}${g.padStart(2, "0")}${b.padStart(2, "0")}`;
+  }
+  return color;
+}

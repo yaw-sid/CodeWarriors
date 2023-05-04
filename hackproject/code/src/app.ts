@@ -2,7 +2,7 @@ import path from "path";
 import { JSDOM } from "jsdom";
 import { rootPath, file, getFileLocation, FileType, getCss } from "./utils";
 import { FileNotSpecified, InvalidFile } from "./errors";
-import { Requirement, TypographicalValidator } from "./validators";
+import { Requirement, ContrastValidator } from "./validators";
 
 const main = async () => {
   try {
@@ -29,13 +29,18 @@ const main = async () => {
 
     dom.window.onload = () => {
       const body = dom.window.document.querySelector("body");
-      const validator = new TypographicalValidator();
       const requirement = Requirement.AA;
   
+      const validator = new ContrastValidator();
       if (!validator.validate(dom, body, requirement)) {
         console.log("\x1b[31m accessibility test failed!\x1b[0m");
-      }    
+        process.exit(1);
+      } 
+      console.log("\x1b[32m accessibility test passed!\x1b[0m");
+      process.exit(0);
+
     };
+    
   } catch (error) {
     if (error instanceof FileNotSpecified) {
       console.error(error.message);
