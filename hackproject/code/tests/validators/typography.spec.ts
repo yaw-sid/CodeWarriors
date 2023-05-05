@@ -1,6 +1,6 @@
 import { JSDOM } from "jsdom";
 import { Requirement, TypographicalValidator } from "../../src/validators";
-import { invalidHeadingHtml, css, validHtml, invalidParagraphHtml } from "./assets";
+import { invalidLetterSpacingHtml, invalidLineHeightHtml, noLetterSpacingHtml, noLineHeightHtml, validHtml, validLetterSpacingInPxHtml } from "./typographyAssets";
 
 let dom: any;
 
@@ -18,31 +18,61 @@ describe("typography validator", () => {
       runScripts: "dangerously",
       resources: "usable",
     });
-    dom.window.document.head.innerHTML += `<style>${css}</style>`;
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
     expect(validator.validate(dom, body, Requirement.AA)).toBe(true);
   });
 
-  it("should return false given invalid heading", async () => {
-    dom = new JSDOM(invalidHeadingHtml, {
+  it("should return false given no line height", async () => {
+    dom = new JSDOM(noLineHeightHtml, {
       runScripts: "dangerously",
       resources: "usable",
     });
-    dom.window.document.head.innerHTML += `<style>${css}</style>`;
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
     expect(validator.validate(dom, body, Requirement.AA)).toBe(false);
   });
 
-  it("should return false given invalid paragraph", async () => {
-    dom = new JSDOM(invalidParagraphHtml, {
+  it("should return false given invalid line height", async () => {
+    dom = new JSDOM(invalidLineHeightHtml, {
       runScripts: "dangerously",
       resources: "usable",
     });
-    dom.window.document.head.innerHTML += `<style>${css}</style>`;
+    await loadDom(dom);
+    const body = dom.window.document.querySelector("body");
+    const validator = new TypographicalValidator();
+    expect(validator.validate(dom, body, Requirement.AA)).toBe(false);
+  });
+
+  it("should return true given default letter spacing", async () => {
+    dom = new JSDOM(noLetterSpacingHtml, {
+      runScripts: "dangerously",
+      resources: "usable",
+    });
+    await loadDom(dom);
+    const body = dom.window.document.querySelector("body");
+    const validator = new TypographicalValidator();
+    expect(validator.validate(dom, body, Requirement.AA)).toBe(true);
+  });
+
+  it("should return true given specified letter spacing", async () => {
+    dom = new JSDOM(validLetterSpacingInPxHtml, {
+      runScripts: "dangerously",
+      resources: "usable",
+    });
+    await loadDom(dom);
+    const body = dom.window.document.querySelector("body");
+    const validator = new TypographicalValidator();
+    expect(validator.validate(dom, body, Requirement.AA)).toBe(true);
+  });
+
+  it("should return false given invalid letter spacing", async () => {
+    dom = new JSDOM(invalidLetterSpacingHtml, {
+      runScripts: "dangerously",
+      resources: "usable",
+    });
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
