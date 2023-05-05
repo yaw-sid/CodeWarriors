@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "build": "npx tsc",
     "start": "npm run build && node --experimental-specifier-resolution=node build/app.js",
