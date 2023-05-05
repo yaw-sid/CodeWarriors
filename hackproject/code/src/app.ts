@@ -2,7 +2,7 @@ import path from "path";
 import { JSDOM } from "jsdom";
 import { rootPath, file, getFileLocation, FileType, getCss } from "./utils";
 import { FileNotSpecified, InvalidFile } from "./errors";
-import { Requirement, ContrastValidator } from "./validators";
+import { Requirement, AllValidators } from "./validators";
 
 const main = async () => {
   try {
@@ -32,7 +32,7 @@ const main = async () => {
       const body = dom.window.document.querySelector("body");
       const requirement = Requirement.AA;
 
-      const validator = new ContrastValidator();
+      const validator = new AllValidators();
       if (!validator.validate(dom, body, requirement)) {
         console.log("\x1b[31m accessibility test failed!\x1b[0m");
         process.exit(1);

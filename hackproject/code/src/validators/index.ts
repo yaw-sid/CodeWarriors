@@ -8,10 +8,9 @@ export enum Requirement {
 };
 
 export { default as ContrastValidator } from "./contrast";
-
 export { default as TypographicalValidator } from "./typography";
-
 export { default as AttributeValidator } from "./attribute";
+export { default as AllValidators } from "./allValidators";
 
 /*
 WCAG Guideline Variables: https://github.com/discoverfinancial/a11y-theme-builder/wiki/WCAG-Guideline-Variables
