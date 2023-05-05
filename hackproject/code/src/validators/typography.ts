@@ -1,4 +1,4 @@
-import { Requirement, Validator } from "validators";
+import { Requirement, Response, Validator } from "validators";
 
 const MIN_LINE_HEIGHT = 1.5;
 const MIN_LETTER_SPACING = 0.12;
@@ -8,12 +8,12 @@ const DEFAULT_LETTER_SPACING = "normal";
 
 const isTypographyTag = (tagName: string): boolean => {
   return /p|h[1-6]/.test(tagName);
-}
+};
 
 const hasUnits = (value: string): boolean => {
   if (!value) return false;
-  return value.endsWith("px") || value.endsWith("em")  || value.endsWith("%");
-}
+  return value.endsWith("px") || value.endsWith("em") || value.endsWith("%");
+};
 
 const toPixel = (value: string): number => {
   if (value.endsWith("px")) {
@@ -29,7 +29,7 @@ const toPixel = (value: string): number => {
     return parseFloat(value.split("%")[0]) / 100;
   }
   return 0;
-}
+};
 
 /* 
   Assumptions:
@@ -37,49 +37,69 @@ const toPixel = (value: string): number => {
   - line height is specified as decimal with no units
 */
 export default class TypographicalValidator implements Validator {
-  private isValid = true;
-
-  validate(dom: any, root: Element, requirement: Requirement): boolean {
-    const fontSize = dom.window.getComputedStyle(root).fontSize || DEFAULT_FONT_SIZE;
-    const lineHeight = dom.window.getComputedStyle(root).lineHeight || DEFAULT_LINE_HEIGHT;
-    const letterSpacing = dom.window.getComputedStyle(root).letterSpacing || DEFAULT_LETTER_SPACING;
-    return this.validateTypography(dom, root, requirement, fontSize, lineHeight, letterSpacing);
+  validate(dom: any, root: Element, requirement: Requirement): Response {
+    const fontSize =
+      dom.window.getComputedStyle(root).fontSize || DEFAULT_FONT_SIZE;
+    const lineHeight =
+      dom.window.getComputedStyle(root).lineHeight || DEFAULT_LINE_HEIGHT;
+    const letterSpacing =
+      dom.window.getComputedStyle(root).letterSpacing || DEFAULT_LETTER_SPACING;
+    return this.validateTypography(
+      dom,
+      root,
+      requirement,
+      fontSize,
+      lineHeight,
+      letterSpacing
+    );
   }
 
-  validateTypography(dom: any, root: Element, requirement: Requirement, 
-      parentFontSize: string, parentLineHeight: string, parentLetterSpacing: string): boolean {
+  validateTypography(
+    dom: any,
+    root: Element,
+    requirement: Requirement,
+    parentFontSize: string,
+    parentLineHeight: string,
+    parentLetterSpacing: string
+  ): Response {
     const tagName = root.tagName.toLowerCase();
-    const fontSize = dom.window.getComputedStyle(root).fontSize || parentFontSize;
-    const lineHeight = dom.window.getComputedStyle(root).lineHeight || parentLineHeight;
-    const letterSpacing = dom.window.getComputedStyle(root).letterSpacing || parentLetterSpacing;
+    const fontSize =
+      dom.window.getComputedStyle(root).fontSize || parentFontSize;
+    const lineHeight =
+      dom.window.getComputedStyle(root).lineHeight || parentLineHeight;
+    const letterSpacing =
+      dom.window.getComputedStyle(root).letterSpacing || parentLetterSpacing;
 
-    if (isTypographyTag(tagName)) {  
+    let response: Response = {
+      isValid: true,
+      errors: [],
+    };
+
+    if (isTypographyTag(tagName)) {
       if (parseFloat(lineHeight) < MIN_LINE_HEIGHT) {
-        console.log("%s: invalid line height: %s", tagName, lineHeight);
-        this.isValid = false;
+        response.isValid = false;
+        response.errors.push(
+          new Error(`${tagName}: invalid line height: ${lineHeight}`)
+        );
       }
 
       if (letterSpacing != "normal") {
         if (hasUnits(letterSpacing)) {
           if (toPixel(letterSpacing) / toPixel(fontSize) < MIN_LETTER_SPACING) {
-            console.log(toPixel(letterSpacing) / toPixel(fontSize));
-            console.log("font size: %s", fontSize);
-            console.log("%s: invalid letter spacing: %s", tagName, letterSpacing);
-            this.isValid = false;
+            response.isValid = false;
+            response.errors.push(
+              new Error(`${tagName}: invalid letter spacing: ${letterSpacing}`)
+            );
           }
-        }
-        else if (parseFloat(letterSpacing) < MIN_LETTER_SPACING) {
-          console.log("%s: invalid letter spacing: %s", tagName, letterSpacing);
-          this.isValid = false;
+        } else if (parseFloat(letterSpacing) < MIN_LETTER_SPACING) {
+          response.isValid = false;
+          response.errors.push(
+            new Error(`${tagName}: invalid letter spacing: ${letterSpacing}`)
+          );
         }
       }
     }
 
-    for (let i = 0; i < root.children.length; ++i) {
-      const child = root.children[i];
-      this.validateTypography(dom, child, requirement, fontSize, lineHeight, letterSpacing);
-    }
-
-    return this.isValid;
+    return response;
   }
 }

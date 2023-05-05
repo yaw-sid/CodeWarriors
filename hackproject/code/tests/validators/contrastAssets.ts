@@ -38,7 +38,7 @@ export const validHtml = `
     <button>Click me!</button>
   </section>
 </body>
-</html>`
+</html>`;
 
 export const invalidHtml = `
 <!DOCTYPE html>
@@ -80,4 +80,4 @@ export const invalidHtml = `
     <button>Click me!</button>
   </section>
 </body>
-</html>`
+</html>`;

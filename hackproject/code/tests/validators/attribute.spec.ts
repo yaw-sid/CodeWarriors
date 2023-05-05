@@ -1,6 +1,11 @@
 import { JSDOM } from "jsdom";
-import { Requirement, AttributeValidator } from "../../src/validators";
+import {
+  Requirement,
+  Response,
+  AttributeValidator,
+} from "../../src/validators";
 import { noImgAltHtml, validHtml } from "./attributeAssets";
+import navigateDom from "../../src/utils/navigateDom";
 
 let dom: any;
 
@@ -21,9 +26,15 @@ describe("attribute validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new AttributeValidator();
-    expect(validator.validate(dom, body, Requirement.AA)).toBe(true);
+    const responses = navigateDom(dom, body, Requirement.AA, validator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(true);
   });
-  
+
   it("should return false given any img tags omits an alt attribute", async () => {
     dom = new JSDOM(noImgAltHtml, {
       runScripts: "dangerously",
@@ -32,6 +43,12 @@ describe("attribute validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new AttributeValidator();
-    expect(validator.validate(dom, body, Requirement.AA)).toBe(false);
+    const responses = navigateDom(dom, body, Requirement.AA, validator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(false);
   });
 });

@@ -1,6 +1,18 @@
 import { JSDOM } from "jsdom";
-import { Requirement, TypographicalValidator } from "../../src/validators";
-import { invalidLetterSpacingHtml, invalidLineHeightHtml, noLetterSpacingHtml, noLineHeightHtml, validHtml, validLetterSpacingInPxHtml } from "./typographyAssets";
+import {
+  Requirement,
+  TypographicalValidator,
+  Response,
+} from "../../src/validators";
+import {
+  invalidLetterSpacingHtml,
+  invalidLineHeightHtml,
+  noLetterSpacingHtml,
+  noLineHeightHtml,
+  validHtml,
+  validLetterSpacingInPxHtml,
+} from "./typographyAssets";
+import navigateDom from "../../src/utils/navigateDom";
 
 let dom: any;
 
@@ -21,7 +33,13 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    expect(validator.validate(dom, body, Requirement.AA)).toBe(true);
+    const responses = navigateDom(dom, body, Requirement.AA, validator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(true);
   });
 
   it("should return false given no line height", async () => {
@@ -32,7 +50,13 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    expect(validator.validate(dom, body, Requirement.AA)).toBe(false);
+    const responses = navigateDom(dom, body, Requirement.AA, validator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(false);
   });
 
   it("should return false given invalid line height", async () => {
@@ -43,7 +67,13 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    expect(validator.validate(dom, body, Requirement.AA)).toBe(false);
+    const responses = navigateDom(dom, body, Requirement.AA, validator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(false);
   });
 
   it("should return true given default letter spacing", async () => {
@@ -54,7 +84,13 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    expect(validator.validate(dom, body, Requirement.AA)).toBe(true);
+    const responses = navigateDom(dom, body, Requirement.AA, validator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(true);
   });
 
   it("should return true given specified letter spacing", async () => {
@@ -65,7 +101,13 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    expect(validator.validate(dom, body, Requirement.AA)).toBe(true);
+    const responses = navigateDom(dom, body, Requirement.AA, validator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(true);
   });
 
   it("should return false given invalid letter spacing", async () => {
@@ -76,6 +118,12 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    expect(validator.validate(dom, body, Requirement.AA)).toBe(false);
+    const responses = navigateDom(dom, body, Requirement.AA, validator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(false);
   });
 });

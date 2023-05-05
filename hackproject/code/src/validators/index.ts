@@ -1,16 +1,21 @@
 export interface Validator {
-  validate(dom: any, root: Element, requirement: Requirement): boolean;
+  validate(dom: any, root: Element, requirement: Requirement): Response;
 }
 
 export enum Requirement {
   AA,
-  AAA
-};
+  AAA,
+}
+
+export interface Response {
+  isValid: boolean;
+  errors: Error[];
+}
 
 export { default as ContrastValidator } from "./contrast";
 export { default as TypographicalValidator } from "./typography";
 export { default as AttributeValidator } from "./attribute";
-export { default as AllValidators } from "./allValidators";
+export { default as ComboValidator } from "./combo";
 
 /*
 WCAG Guideline Variables: https://github.com/discoverfinancial/a11y-theme-builder/wiki/WCAG-Guideline-Variables

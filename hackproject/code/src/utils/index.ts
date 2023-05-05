@@ -1,5 +1,5 @@
 export { default as file } from "./file";
-export { default as rootPath } from "./srcPath";
+export { rootPath } from "./srcPath";
 export {
   default as rgbToHex,
   DEFAULT_BACKGROUND,
@@ -8,3 +8,4 @@ export {
 export { validate } from "./contrast";
 export { FileType, getFileLocation } from "./argument";
 export { default as getCss } from "./getCss";
+export { default as navigateDom } from "./navigateDom";

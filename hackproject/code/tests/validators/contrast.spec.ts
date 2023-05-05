@@ -1,6 +1,12 @@
 import { JSDOM } from "jsdom";
-import { Requirement, ContrastValidator } from "../../src/validators";
+import {
+  Requirement,
+  ContrastValidator,
+  Response,
+  AttributeValidator,
+} from "../../src/validators";
 import { validHtml, invalidHtml } from "./contrastAssets";
+import navigateDom from "../../src/utils/navigateDom";
 
 let dom: any;
 
@@ -13,7 +19,7 @@ const loadDom = (dom: any): Promise<void> => {
 };
 
 describe("contrast validator", () => {
-  it("should return true given valid dom",async () => {
+  it("should return true given valid dom", async () => {
     dom = new JSDOM(validHtml, {
       runScripts: "dangerously",
       resources: "usable",
@@ -21,10 +27,16 @@ describe("contrast validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const contrastValidator = new ContrastValidator();
-    expect(contrastValidator.validate(dom, body, Requirement.AA)).toBe(true);
-  })
+    const responses = navigateDom(dom, body, Requirement.AA, contrastValidator);
 
-  it("should return false given an invalid dom",async () => {
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(true);
+  });
+
+  it("should return false given an invalid dom", async () => {
     dom = new JSDOM(invalidHtml, {
       runScripts: "dangerously",
       resources: "usable",
@@ -32,7 +44,12 @@ describe("contrast validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const contrastValidator = new ContrastValidator();
-    expect(contrastValidator.validate(dom, body, Requirement.AA)).toBe(false);
-  })
-  
-})
+    const responses = navigateDom(dom, body, Requirement.AA, contrastValidator);
+
+    let isValid = true;
+    responses.forEach((response: Response) => {
+      isValid &&= response.isValid;
+    });
+    expect(isValid).toBe(false);
+  });
+});
