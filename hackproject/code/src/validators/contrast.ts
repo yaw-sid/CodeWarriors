@@ -33,10 +33,15 @@ export default class ContrastValidator implements Validator {
     const contrastRatio = bgShade.getContrastRatio(colorShade);
     const elementTag = element.tagName.toLowerCase();
 
-    const isValidContrast = requirement == Requirement.AA ? contrastRatio >= AA_MIN_CONTRAST_RATIO
-      : isText(elementTag) ? contrastRatio >= AAA_MIN_CONTRAST_RATIO_TB
-      : contrastRatio >= AAA_MIN_CONTRAST_RATIO;
-    
+    let isValidContrast;
+    const isTextElement = isText(elementTag);
+
+    if(requirement === Requirement.AA) {
+      isValidContrast = isTextElement ? contrastRatio >= AA_MIN_CONTRAST_RATIO_TB : contrastRatio >= AA_MIN_CONTRAST_RATIO
+    } else if (requirement === Requirement.AAA) {
+      isValidContrast = isTextElement ? contrastRatio >= AAA_MIN_CONTRAST_RATIO_TB : contrastRatio >= AA_MIN_CONTRAST_RATIO
+    } 
+
     if(!isValidContrast){
       console.log("<"+elementTag+">");
       console.log("\tinvalid contrast betweeen background(%s) and foreground(%s)", elementBgColor, elementColor);

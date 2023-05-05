@@ -9,6 +9,9 @@
     "start": "npm run build && node --experimental-specifier-resolution=node build/app.js",
     "test": "npx jest"
   },
+  "bin": {
+    "dev-x": "script.sh"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
