@@ -59,13 +59,13 @@ export default class ContrastValidator implements Validator {
       const elementString = root.outerHTML;
       const start = htmlString.indexOf(elementString);
       const end = start + elementString.length;
+      const err = new Error(`invalid contrast betweeen background(${this.background}) and element(${this.foreground})`);
 
       response.errors.push({
         start,
         end,
-        error: new Error(
-          `\tinvalid contrast betweeen background(${this.background}) and foreground(${this.foreground})`
-        ),
+        error: err,
+        log: `${elementString}\n\t${err.message}`
       });
     }
 
