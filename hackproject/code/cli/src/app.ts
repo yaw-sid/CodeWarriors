@@ -1,8 +1,8 @@
-import path from "path";
-import fs from "fs/promises";
+import * as path from "path";
+import * as fs from "fs/promises";
 import { FileNotSpecified, InvalidFile } from "./errors";
 import { getFileLocation, FileType } from "./utils/argument";
-import { ContrastValidator, Requirement, validate } from "../../sdk/index";
+import { ContrastValidator, Requirement, validate } from "../../sdk/";
 
 const main = async () => {
   try {
@@ -10,7 +10,7 @@ const main = async () => {
     if (process.argv.includes("--html")) {
       htmlFile = getFileLocation(FileType.HTML);
     }
-    const htmlPath = path.join(__dirname, htmlFile);
+    const htmlPath = path.join(__dirname, '../', htmlFile);
     const html = await fs.readFile(htmlPath, { encoding: "utf-8" });
 
     let css = "";
