@@ -27,7 +27,7 @@ describe("contrast validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const contrastValidator = new ContrastValidator();
-    const responses = validateDom(dom, body, Requirement.AA, contrastValidator);
+    const responses = validateDom(dom, body, Requirement.AA, contrastValidator, validHtml);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -44,7 +44,7 @@ describe("contrast validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const contrastValidator = new ContrastValidator();
-    const responses = validateDom(dom, body, Requirement.AA, contrastValidator);
+    const responses = validateDom(dom, body, Requirement.AA, contrastValidator, invalidHtml);
 
     let isValid = true;
     responses.forEach((response: Response) => {
