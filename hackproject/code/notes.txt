@@ -1,0 +1,17 @@
+function getAllAnchorIndices() {
+  const aTags = document.getElementsByTagName('a');
+  const indices = [];
+  for (let i = 0; i < aTags.length; i++) {
+    const rect = aTags[i].getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const topRelativeToPage = rect.top + scrollTop;
+    const leftRelativeToPage = rect.left + scrollLeft;
+    const index = {
+      top: topRelativeToPage,
+      left: leftRelativeToPage
+    };
+    indices.push(index);
+  }
+  return indices;
+}

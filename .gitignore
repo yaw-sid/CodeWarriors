@@ -18,7 +18,7 @@ venv
 
 # Miscellaneous
 .idea
-.vscode
+# .vscode
 
 # Python directories
 __pycache__
