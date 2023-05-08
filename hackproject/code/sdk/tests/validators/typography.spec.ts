@@ -12,7 +12,7 @@ import {
   validHtml,
   validLetterSpacingInPxHtml,
 } from "./typographyAssets";
-import navigateDom from "../../src/utils/navigateDom";
+import validateDom from "../../src/utils/validateDom";
 
 let dom: any;
 
@@ -33,7 +33,7 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, validator);
+    const responses = validateDom(dom, body, Requirement.AA, validator);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -50,7 +50,7 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, validator);
+    const responses = validateDom(dom, body, Requirement.AA, validator);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -67,7 +67,7 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, validator);
+    const responses = validateDom(dom, body, Requirement.AA, validator);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -84,7 +84,7 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, validator);
+    const responses = validateDom(dom, body, Requirement.AA, validator);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -101,7 +101,7 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, validator);
+    const responses = validateDom(dom, body, Requirement.AA, validator);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -118,7 +118,7 @@ describe("typography validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new TypographicalValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, validator);
+    const responses = validateDom(dom, body, Requirement.AA, validator);
 
     let isValid = true;
     responses.forEach((response: Response) => {

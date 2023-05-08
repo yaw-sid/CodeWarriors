@@ -6,7 +6,7 @@ import {
   AttributeValidator,
 } from "../../src/validators";
 import { validHtml, invalidHtml } from "./contrastAssets";
-import navigateDom from "../../src/utils/navigateDom";
+import validateDom from "../../src/utils/validateDom";
 
 let dom: any;
 
@@ -27,7 +27,7 @@ describe("contrast validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const contrastValidator = new ContrastValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, contrastValidator);
+    const responses = validateDom(dom, body, Requirement.AA, contrastValidator);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -44,7 +44,7 @@ describe("contrast validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const contrastValidator = new ContrastValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, contrastValidator);
+    const responses = validateDom(dom, body, Requirement.AA, contrastValidator);
 
     let isValid = true;
     responses.forEach((response: Response) => {

@@ -1,5 +1,10 @@
 export interface Validator {
-  validate(dom: any, root: Element, requirement: Requirement): Response;
+  validate(
+    dom: any,
+    root: Element,
+    requirement: Requirement,
+    htmlString: string
+  ): Response;
 }
 
 export enum Requirement {
@@ -9,7 +14,11 @@ export enum Requirement {
 
 export interface Response {
   isValid: boolean;
-  errors: Error[];
+  errors: {
+    start: number;
+    end: number;
+    error: Error;
+  }[];
 }
 
 export { default as ContrastValidator } from "./contrast";

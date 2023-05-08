@@ -1,8 +1,9 @@
 import { Requirement, Response, Validator } from "./index";
 import { Shade } from "a11y-theme-builder-sdk";
-import { rgbHex } from "../utils/color";
+import { rgbToHex } from "../utils/color";
 
 const AA_MIN_CONTRAST_RATIO = 3.1;
+const AAA_MIN_CONTRAST_RATIO = 3.1;
 const AA_MIN_CONTRAST_RATIO_TB = 4.5;
 const AAA_MIN_CONTRAST_RATIO_TB = 7.1;
 
@@ -21,12 +22,17 @@ export default class ContrastValidator implements Validator {
   private background = DEFAULT_BACKGROUND;
   private foreground = DEFAULT_FOREGROUND;
 
-  validate(dom: any, root: Element, requirement: Requirement): Response {
+  validate(
+    dom: any,
+    root: Element,
+    requirement: Requirement,
+    htmlString: string
+  ): Response {
     this.background =
-      rgbHex(dom.window.getComputedStyle(root).backgroundColor) ||
+      rgbToHex(dom.window.getComputedStyle(root).backgroundColor) ||
       this.background;
     this.foreground =
-      rgbHex(dom.window.getComputedStyle(root).color) || this.foreground;
+      rgbToHex(dom.window.getComputedStyle(root).color) || this.foreground;
 
     const bgShade = Shade.fromHex(this.background);
     const colorShade = Shade.fromHex(this.foreground);
@@ -43,18 +49,24 @@ export default class ContrastValidator implements Validator {
     } else if (requirement === Requirement.AAA) {
       isValidContrast = isTextElement
         ? contrastRatio >= AAA_MIN_CONTRAST_RATIO_TB
-        : contrastRatio >= AA_MIN_CONTRAST_RATIO;
+        : contrastRatio >= AAA_MIN_CONTRAST_RATIO;
     }
 
     let response: Response = { isValid: true, errors: [] };
 
     if (!isValidContrast) {
       response.isValid = false;
-      response.errors.push(
-        new Error(
+      const elementString = root.outerHTML;
+      const start = htmlString.indexOf(elementString);
+      const end = start + elementString.length;
+
+      response.errors.push({
+        start,
+        end,
+        error: new Error(
           `\tinvalid contrast betweeen background(${this.background}) and foreground(${this.foreground})`
-        )
-      );
+        ),
+      });
     }
 
     return response;

@@ -1,8 +1,15 @@
 import path from "path";
 import { JSDOM } from "jsdom";
-import { rootPath, file, getFileLocation, FileType, getCss } from "./utils";
+import {
+  rootPath,
+  file,
+  getFileLocation,
+  FileType,
+  getCss,
+  navigateDom,
+} from "./utils";
 import { FileNotSpecified, InvalidFile } from "./errors";
-import { Requirement, AllValidators } from "./validators";
+import { Requirement, ComboValidator } from "./validators";
 
 const main = async () => {
   try {
@@ -32,8 +39,14 @@ const main = async () => {
       const body = dom.window.document.querySelector("body");
       const requirement = Requirement.AA;
 
-      const validator = new AllValidators();
-      if (!validator.validate(dom, body, requirement)) {
+      const validator = new ComboValidator();
+
+      let isValid = true;
+      navigateDom(dom, body, requirement, validator).forEach((response) => {
+        isValid &&= response.isValid;
+      });
+
+      if (!isValid) {
         console.log("\x1b[31m accessibility test failed!\x1b[0m");
         process.exit(1);
       }

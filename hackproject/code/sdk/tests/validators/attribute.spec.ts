@@ -1,12 +1,11 @@
 import { JSDOM } from "jsdom";
 import {
   Requirement,
-  ContrastValidator,
   Response,
   AttributeValidator,
 } from "../../src/validators";
-import { validHtml, invalidHtml } from "./contrastAssets";
-import navigateDom from "../../src/utils/navigateDom";
+import { noImgAltHtml, validHtml } from "./attributeAssets";
+import validateDom from "../../src/utils/validateDom";
 
 let dom: any;
 
@@ -18,16 +17,16 @@ const loadDom = (dom: any): Promise<void> => {
   });
 };
 
-describe("contrast validator", () => {
-  it("should return true given valid dom", async () => {
+describe("attribute validator", () => {
+  it("should return true given all img tags contain an alt attribute", async () => {
     dom = new JSDOM(validHtml, {
       runScripts: "dangerously",
       resources: "usable",
     });
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
-    const contrastValidator = new ContrastValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, contrastValidator);
+    const validator = new AttributeValidator();
+    const responses = validateDom(dom, body, Requirement.AA, validator);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -36,15 +35,15 @@ describe("contrast validator", () => {
     expect(isValid).toBe(true);
   });
 
-  it("should return false given an invalid dom", async () => {
-    dom = new JSDOM(invalidHtml, {
+  it("should return false given any img tags omits an alt attribute", async () => {
+    dom = new JSDOM(noImgAltHtml, {
       runScripts: "dangerously",
       resources: "usable",
     });
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
-    const contrastValidator = new ContrastValidator();
-    const responses = navigateDom(dom, body, Requirement.AA, contrastValidator);
+    const validator = new AttributeValidator();
+    const responses = validateDom(dom, body, Requirement.AA, validator);
 
     let isValid = true;
     responses.forEach((response: Response) => {
