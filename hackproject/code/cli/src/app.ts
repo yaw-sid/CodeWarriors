@@ -2,7 +2,7 @@ import * as path from "path";
 import * as fs from "fs/promises";
 import { FileNotSpecified, InvalidFile } from "./errors";
 import { getFileLocation, FileType } from "./utils/argument";
-import { ContrastValidator, Requirement, validate } from "../../sdk/";
+import { ComboValidator, Requirement, validate } from "../../sdk/";
 
 const main = async () => {
   try {
@@ -24,13 +24,18 @@ const main = async () => {
     const responses = await validate({
       html: html,
       htmlPath: htmlPath,
-      validator: new ContrastValidator(),
+      validator: new ComboValidator(),
       requirement: Requirement.AA,
     });
 
     let isValid = true;
 
-    responses.forEach((response) => (isValid &&= response.isValid));
+    responses.forEach((response) => {
+      isValid &&= response.isValid;
+      if (!response.isValid) {
+        response.errors.forEach((err) => console.log('\n%s\n', err.log));
+      }
+    });
 
     if (!isValid) {
       console.log("\x1b[31m accessibility test failed!\x1b[0m");

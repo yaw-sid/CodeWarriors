@@ -60,16 +60,23 @@ export default class TypographicalValidator implements Validator {
       errors: [],
     };
 
+    const elementString = root.outerHTML;
+    const start = htmlString.indexOf(elementString);
+    const end = start + elementString.length;
+    let log = `${elementString}\n\t`;
+    let err;
+
+
     if (isTypographyTag(tagName)) {
       if (parseFloat(this.lineHeight) < MIN_LINE_HEIGHT) {
         response.isValid = false;
-        const rect = root.getBoundingClientRect();
+        err = new Error(`${tagName}: invalid line height: ${this.lineHeight}`);
+        log += err.message; 
         response.errors.push({
-          start: rect.left,
-          end: rect.left + rect.width,
-          error: new Error(
-            `${tagName}: invalid line height: ${this.lineHeight}`
-          ),
+          start,
+          end,
+          error: err,
+          log
         });
       }
 
@@ -80,26 +87,24 @@ export default class TypographicalValidator implements Validator {
             MIN_LETTER_SPACING
           ) {
             response.isValid = false;
-            const rect = root.getBoundingClientRect();
+            err = new Error(`${tagName}: invalid letter spacing: ${this.letterSpacing}`);
+            log += err.message; 
             response.errors.push({
-              start: rect.left,
-              end: rect.left + rect.width,
-              error: new Error(
-                `${tagName}: invalid letter spacing: ${this.letterSpacing}`
-              ),
+              start,
+              end,
+              error: err,
+              log
             });
           }
         } else if (parseFloat(this.letterSpacing) < MIN_LETTER_SPACING) {
           response.isValid = false;
-          const elementString = root.outerHTML;
-          const start = htmlString.indexOf(elementString);
-          const end = start + elementString.length;
+          err = new Error(`${tagName}: invalid letter spacing: ${this.letterSpacing}`);
+          log += err.message; 
           response.errors.push({
             start,
             end,
-            error: new Error(
-              `${tagName}: invalid letter spacing: ${this.letterSpacing}`
-            ),
+            error: err,
+            log
           });
         }
       }

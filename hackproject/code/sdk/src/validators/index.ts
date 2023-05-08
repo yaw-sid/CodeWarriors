@@ -18,6 +18,7 @@ export interface Response {
     start: number;
     end: number;
     error: Error;
+    log: string;
   }[];
 }
 
