@@ -1,8 +1,8 @@
 import * as path from "path";
 import * as fs from "fs/promises";
 import { FileNotSpecified, InvalidFile } from "./errors";
-import { getFileLocation, FileType } from "./utils/argument";
-import { ComboValidator, Requirement, validate } from "../../sdk/";
+import { getFileLocation, FileType, getValidator, getRequirement } from "./utils/argument";
+import { ComboValidator, Requirement, validate, Validator } from "../../sdk/";
 
 const main = async () => {
   try {
@@ -21,11 +21,21 @@ const main = async () => {
       });
     }
 
+    let validator: Validator = new ComboValidator();
+    if (process.argv.includes("--validator")) {
+      validator = getValidator();
+    }
+
+    let requirement = Requirement.AA;
+    if (process.argv.includes("--requirement")) {
+      requirement = getRequirement();
+    }
+
     const responses = await validate({
       html: html,
       htmlPath: htmlPath,
-      validator: new ComboValidator(),
-      requirement: Requirement.AA,
+      validator: validator,
+      requirement: requirement,
     });
 
     let isValid = true;
