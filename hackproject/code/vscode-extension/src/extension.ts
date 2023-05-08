@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
     if (!activeEditor) {
       return;
     }
-    5;
+
     const activeDocument = activeEditor.document;
     if (activeDocument.languageId !== "html") {
       vscode.window.showErrorMessage(
@@ -23,35 +23,49 @@ export function activate(context: vscode.ExtensionContext) {
       backgroundColor: "red",
     });
 
+    const validator = new sdk.ComboValidator();
+
     const updateDiagnostics = async (document: TextDocument): Promise<void> => {
       const diagnostics: Diagnostic[] = [];
 
       const responses = await sdk.validate({
         html: document.getText(),
-        validator: new sdk.ComboValidator(),
+        validator: validator,
         requirement: sdk.Requirement.AA,
-        htmlPath: document.uri.path,
+        htmlPath: document.fileName,
       });
 
       responses.forEach((response) => {
         if (!response.isValid) {
           response.errors.forEach((e) => {
             const { start, end, error } = e;
+            const range = new Range(
+              document.positionAt(start),
+              document.positionAt(end)
+            );
 
             diagnostics.push(
-              new Diagnostic(
-                new Range(document.positionAt(start), document.positionAt(end)),
-                error.message,
-                DiagnosticSeverity.Error
-              )
+              new Diagnostic(range, error.message, DiagnosticSeverity.Error)
             );
           });
         }
       });
 
-      console.log(responses);
-
       activeEditor.setDecorations(decorationType, diagnostics);
+
+      vscode.languages.registerHoverProvider("html", {
+        provideHover(_, position) {
+          const relevantDiagnostics = diagnostics.filter(
+            (d) =>
+              d.range.contains(position) &&
+              d.severity === vscode.DiagnosticSeverity.Error
+          );
+          const message = relevantDiagnostics.map((d) => d.message).join("\n");
+          const hover = new vscode.Hover(message);
+
+          return hover;
+        },
+      });
     };
 
     updateDiagnostics(activeDocument);
