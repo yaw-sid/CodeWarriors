@@ -24,7 +24,7 @@ export const validate = async (params: Params): Promise<Response[]> => {
 
     dom.window.document.head.innerHTML += `<style>${css}</style>`;
 
-    dom.window.onload = () => {
+    dom.window.document.onload = () => {
       const body = dom.window.document.querySelector("body");
       resolve(validateDom(dom, body, requirement, validator, html));
     };
