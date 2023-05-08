@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
     if (!activeEditor) {
       return;
     }
-
+    5;
     const activeDocument = activeEditor.document;
     if (activeDocument.languageId !== "html") {
       vscode.window.showErrorMessage(
