@@ -17,11 +17,13 @@ export default class AttributeValidator implements Validator {
       const elementString = element.outerHTML;
       const start = htmlString.indexOf(elementString);
       const end = start + elementString.length;
+      const err = new Error("img tags should always include alt attribute");
 
       response.errors.push({
         start,
         end,
-        error: new Error("img tags should always include alt attribute"),
+        error: err,
+        log: `${elementString}\n\t${err.message}`
       });
     }
 

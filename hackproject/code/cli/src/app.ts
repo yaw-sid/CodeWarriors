@@ -1,8 +1,8 @@
-import path from "path";
-import fs from "fs/promises";
+import * as path from "path";
+import * as fs from "fs/promises";
 import { FileNotSpecified, InvalidFile } from "./errors";
-import { getFileLocation, FileType } from "./utils/argument";
-import { ContrastValidator, Requirement, validate } from "../../sdk/index";
+import { getFileLocation, FileType, getValidator, getRequirement } from "./utils/argument";
+import { ComboValidator, Requirement, validate, Validator } from "../../sdk/";
 
 const main = async () => {
   try {
@@ -10,7 +10,7 @@ const main = async () => {
     if (process.argv.includes("--html")) {
       htmlFile = getFileLocation(FileType.HTML);
     }
-    const htmlPath = path.join(__dirname, htmlFile);
+    const htmlPath = path.join(__dirname, '../', htmlFile);
     const html = await fs.readFile(htmlPath, { encoding: "utf-8" });
 
     let css = "";
@@ -21,16 +21,31 @@ const main = async () => {
       });
     }
 
+    let validator: Validator = new ComboValidator();
+    if (process.argv.includes("--validator")) {
+      validator = getValidator();
+    }
+
+    let requirement = Requirement.AA;
+    if (process.argv.includes("--requirement")) {
+      requirement = getRequirement();
+    }
+
     const responses = await validate({
       html: html,
       htmlPath: htmlPath,
-      validator: new ContrastValidator(),
-      requirement: Requirement.AA,
+      validator: validator,
+      requirement: requirement,
     });
 
     let isValid = true;
 
-    responses.forEach((response) => (isValid &&= response.isValid));
+    responses.forEach((response) => {
+      isValid &&= response.isValid;
+      if (!response.isValid) {
+        response.errors.forEach((err) => console.log('\n%s\n', err.log));
+      }
+    });
 
     if (!isValid) {
       console.log("\x1b[31m accessibility test failed!\x1b[0m");

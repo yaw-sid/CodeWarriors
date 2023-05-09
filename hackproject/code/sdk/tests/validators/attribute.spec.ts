@@ -26,7 +26,7 @@ describe("attribute validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new AttributeValidator();
-    const responses = validateDom(dom, body, Requirement.AA, validator);
+    const responses = validateDom(dom, body, Requirement.AA, validator, validHtml);
 
     let isValid = true;
     responses.forEach((response: Response) => {
@@ -43,7 +43,7 @@ describe("attribute validator", () => {
     await loadDom(dom);
     const body = dom.window.document.querySelector("body");
     const validator = new AttributeValidator();
-    const responses = validateDom(dom, body, Requirement.AA, validator);
+    const responses = validateDom(dom, body, Requirement.AA, validator, noImgAltHtml);
 
     let isValid = true;
     responses.forEach((response: Response) => {
