@@ -53,7 +53,7 @@
 
 | Deliverable | Purpose |
 | --- | --- |
-| [Use Case Story](./hackproject/usecase.md) | Supporting material for judges. | 
+| [Use Case Story](./hackproject/usecase/README.md) | Supporting material for judges. | 
 | [Visual Collaboration Board URL](https://app.mural.co/t/codewarriors8574/m/codewarriors8574/1682500916798/679167347f6eaeab55fed452ac3b935e74122f81?sender=u3625247de97e6d72adf84244) | Supporting development material for team. | 
 | [Visual Collaboration Board Artifacts](./hackproject/media/board) | Supporting development material for team. | 
 | [Design Thinking Playback Brief](./presentations/playback-brief.ppt)| Supporting development material for team. | 
