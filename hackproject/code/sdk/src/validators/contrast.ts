@@ -65,10 +65,10 @@ export default class ContrastValidator implements Validator {
         start,
         end,
         error: err,
-        log: `${elementString}\n\t${err.message}`
+        log: `${elementString.replace(root.innerHTML, '...')}\n${err.message}`
       });
     }
-
     return response;
   }
 }
+// elementSting.replace(/<(.*)>.*<\/(\1)>/gm, '...')
