@@ -3,7 +3,7 @@ import * as sdk from "../../sdk";
 import { Diagnostic, Range, DiagnosticSeverity, TextDocument } from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Congratulations, your extension "accessify" is now active!');
+  console.log("Accessify is now active!");
 
   let disposable = vscode.commands.registerCommand("accessify.validate", () => {
     const activeEditor = vscode.window.activeTextEditor;
