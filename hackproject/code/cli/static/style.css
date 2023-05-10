@@ -1,0 +1,23 @@
+section {
+  background-color: #f7f7f7;
+}
+
+.good {
+  color: #303030;
+  line-height: 1.5;
+}
+
+.poor {
+  color: #bdbdff;
+}
+
+p {
+  font-size: 1rem;
+}
+
+button {
+  display: inline-block;
+  padding: 1.25rem;
+  font-size: 1rem;
+  color: #4169e1;
+}

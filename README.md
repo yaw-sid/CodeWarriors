@@ -10,7 +10,7 @@
     b) Add the mandatory GitHub Topics.
 --->
  
-# _devX
+# Accessify
 <!--- Template Instructions  
   Each Participating Team will have a unique name. Each Team will create a unique name for their project. Replace above "Project Name" with Participating Team Project Name which is different from the Team Name.
 --->
@@ -27,14 +27,17 @@
 | Event Attribute| Description |
 | --- | --- |
 | Project Team Name | CodeWarriors |
-| Project Name | _devX |
+| Project Name | Accessify |
 | Challenge | Challenge 1 |
-| Event Track | Hack the code |
+| Event Track | Hack the Code |
 
 ## Use Case Abstract
 <!--- Template Instructions  
   Provide a brief description of the use case tackled by the team.
 --->
+ Accessibility testing is often done after development is complete, which can result in costly and time-consuming fixes. This is because developers either have to manually review a long list of accessibility standards or use paid tools that generate test results based on a website's URL.
+
+To solve this problem, we developed Accessify, a solution that integrates accessibility testing into the development process. Accessify is designed for frontend developers who use HTML and CSS to implement user interfaces.
 ## Project Artifacts
 <!--- Template Instructions  
   Complete the table below. Replace URLs where necessary.
@@ -53,28 +56,24 @@
 
 | Deliverable | Purpose |
 | --- | --- |
-| [Use Case Story](./hackproject/usecase.md) | Supporting material for judges. | 
-| [Visual Collaboration Board URL]() | Supporting development material for team. | 
+| [Use Case Story](./hackproject/usecase/README.md) | Supporting material for judges. | 
+| [Visual Collaboration Board URL](https://app.mural.co/t/codewarriors8574/m/codewarriors8574/1682500916798/679167347f6eaeab55fed452ac3b935e74122f81?sender=u3625247de97e6d72adf84244) | Supporting development material for team. | 
 | [Visual Collaboration Board Artifacts](./hackproject/media/board) | Supporting development material for team. | 
-| [Design Thinking Playback Brief](./presentations/playback-brief.ppt)| Supporting development material for team. | 
-| [Concept Playback - Pitch Video](./media/videos/pitch-video.mp4)|  Required for judging. | 
-| [Concept Show-n-Tell Video](./media/videos/demo-video.mp4) | Optional or Required for judging depending on track. | 
+| [Design Thinking Playback Brief](./hackproject/presentations/playback-brief.pptx)| Supporting development material for team. | 
+| [Concept Playback - Pitch Video](https://drive.google.com/file/d/1wJJQS998y2RMfb6sbKtH7OCKYwF48YRk/view?usp=sharing)|  Required for judging. | 
+| [Concept Show-n-Tell Video](https://drive.google.com/file/d/18YRrx2QAGUY6skMZ7dMXgRFWEZyUxUk1/view?usp=sharing) | Optional or Required for judging depending on track. | 
 | [Solution Code](./hackproject/README.md) | | Supporting material for judging depending on track.   | 
 
-## Solution Decisions
-<!--- Template Instructions  
-  Optional Section. If the team has documented reasons for any of their business or technical decisions, use this section to  itemize the links to the decision documents using the template in the /decisions folder.  Remove this section if nothing to list.
----> 
 
-1. [ADR 01](./decisions/adr-01.md)
-2. [BDR 01](./decisions/bdr-01.md)
+## Tech Stack
+Accessify is developed in Typescript.
 
 ## Team Information
 <!--- Template Instructions  
   Provide a brief description of your team, how it came to be, etc.
 --->  
 
-Our team members came together because ...
+Our team members came together because we work together in the same organization with the exception of Ronald, who was introduced to us by our team lead.
  
 | Name | Organization |
 | --- | --- |
