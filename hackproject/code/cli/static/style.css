@@ -2,12 +2,13 @@ section {
   background-color: #f7f7f7;
 }
 
-.poor-color {
-  color: #bdbdff;
+.good {
+  color: #303030;
+  line-height: 1.5;
 }
 
-h1 {
-  font-size: 2rem;
+.poor {
+  color: #bdbdff;
 }
 
 p {
